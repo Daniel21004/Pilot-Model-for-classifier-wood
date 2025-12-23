@@ -13,7 +13,7 @@ For launch the project execute the follow command
 
 
 ```
-python3 app.py
+python app.py
 ```
 ó
 ```
@@ -28,3 +28,9 @@ http://localhost:7860/
 ```
 
 If the prot 7860 is in use, modify it in the `interface.launch` method (at the end of code) of the 'app.py' file
+
+Or, for visualize on the web, visit the next link
+
+
+
+# Launch project

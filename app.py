@@ -5,15 +5,16 @@ import torchvision.transforms as transforms
 from torchvision.models import mobilenet_v3_large
 from PIL import Image
 import numpy as np
+from TriAttentionArchitectura import WoodClassifierWithTriAttention
 
 # Clases de madera
-CLASS_LABELS = {'BM': 0, 'CM': 1, 'JN': 2, 'HC': 3}
-CLASSES = ['BM', 'CM', 'JN', 'HC']
+CLASS_LABELS = {'CM': 0, 'JN': 1, 'BM': 2, 'HC': 3}
+CLASSES = ['CM', 'JN', 'BM', 'HC']
 
 CLASS_DESCRIPTIONS = {
-    'BM': 'Faique',
     'CM': 'Cegro', 
     'JN': 'Nogal',  
+    'BM': 'Faique',
     'HC': 'Guayacan'  
 }
 
@@ -33,12 +34,21 @@ def load_model(model_path):
     Carga el modelo PyTorch desde un archivo .pt
     """
     try:
-        model = mobilenet_v3_large(weights=None)
-        num_features = model.classifier[3].in_features
-        model.classifier[3] = nn.Linear(in_features=num_features, out_features=4)
-        model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-        # model = torch.load(model_path, map_location=torch.device('cpu'))
+        model = WoodClassifierWithTriAttention(num_classes=4, use_tri_attention=True)
+        
+        # Cargar los pesos entrenados
+        state_dict = torch.load(model_path, map_location=torch.device('cpu'))
+        model.load_state_dict(state_dict)
+        
+        # Modo evaluación (desactiva dropout, batch norm en modo inferencia)
         model.eval()
+        
+        # model = mobilenet_v3_large(weights=None)
+        # num_features = model.classifier[3].in_features
+        # model.classifier[3] = nn.Linear(in_features=num_features, out_features=4)
+        # model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+
+        print("✓ Modelo cargado exitosamente")
         return model
     except Exception as e:
         print(f"Error al cargar el modelo: {e}")
@@ -96,6 +106,7 @@ def predict_image(image, model_path="modelo.pt"):
     except Exception as e:
         error_msg = f"Error durante la predicción: {str(e)}"
         return error_msg, {}
+
 def create_gradio_interface():
     """
     Crea la interfaz de Gradio
@@ -123,7 +134,7 @@ def create_gradio_interface():
         inputs=[
             gr.Image(type="pil", label="📸 Subir imagen de madera"),
             gr.Textbox(
-                value="best_model_params_RGB.pt", 
+                value="Modelo_E11__CON_aumento_con_tri.pt", 
                 label="📁 Ruta del modelo (.pt)",
                 placeholder="Ej: modelo.pt o /ruta/a/tu/modelo.pt"
             ),
@@ -232,7 +243,7 @@ def create_custom_model_interface(model_path, threshold=0.5):
 
 
 interface = create_custom_model_interface(
-    model_path="best_model_params_RGB.pth",
+    model_path="Modelo_E11__CON_aumento_con_tri.pt",
     threshold=0.6
 )
 
