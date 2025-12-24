@@ -5,7 +5,7 @@ This is repository contains the code for the pilot test of the original MobileNe
 For install dependencies execute the follow command into project
 
 ```
-pip install -r requeriments.txt
+pip install -r requirements.txt
 ```
 
 # Launch project
