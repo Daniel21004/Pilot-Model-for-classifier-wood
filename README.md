@@ -5,7 +5,7 @@ This is repository contains the code for the pilot test of the original MobileNe
 For install dependencies execute the follow command into project
 
 ```
-pip install -r requeriments.txt
+pip install -r requirements.txt
 ```
 
 # Launch project
@@ -29,8 +29,3 @@ http://localhost:7860/
 
 If the prot 7860 is in use, modify it in the `interface.launch` method (at the end of code) of the 'app.py' file
 
-Or, for visualize on the web, visit the next link
-
-
-
-# Launch project
