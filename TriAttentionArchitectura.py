@@ -3,14 +3,12 @@ from torchvision.models.mobilenetv3 import MobileNet_V3_Large_Weights
 from torchvision.models.mobilenetv3 import mobilenet_v3_large
 import torch.nn as nn
 import torch
-import torchvision
 import logging
 
 weights = MobileNet_V3_Large_Weights.IMAGENET1K_V1
 ENABLE_LOGS = True
 
 logger = logging.getLogger(__name__)  # Logger específico del módulo
-logger.setLevel(logging.INFO)  # INFO o DEBUG
 
 # Solo si no hay handlers configurados aún (evita duplicados)
 if not logger.hasHandlers():
